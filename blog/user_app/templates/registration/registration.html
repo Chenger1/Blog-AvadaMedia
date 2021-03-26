@@ -7,7 +7,7 @@
         {% csrf_token %}
         <!--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
 
-        <h1 class="h3 mb-3 fw-normal">Регистрация</h1>
+        <h1 class="h3 mb-3 fw-normal">Registration</h1>
         {% if form.errors %}
             <ul style="margin-left: 0; padding-left: 0; list-style-type: none; ">
                 {% for error, text in form.errors.items %}
@@ -55,24 +55,24 @@
                 <div class="form-floating">
                     <input class="form-control" id="floatingFirstName" placeholder="name@example.com" name="first_name"
                            value="{{ form.data.first_name }}">
-                    <label for="floatingFirstName">First Name (Не обязательно)</label>
+                    <label for="floatingFirstName">First Name (Optional)</label>
                 </div>
             </div>
             <div class="col">
                 <div class="form-floating">
                     <input class="form-control" id="floatingLastName" placeholder="name@example.com"
                            name="last_name" value="{{ form.data.last_name }}">
-                    <label for="floatingLastName">Last Name (Не обязательно)</label>
+                    <label for="floatingLastName">Last Name (Optional)</label>
                 </div>
             </div>
         </div>
 
         <div class="mb-3 width_limit">
             <label>
-                Есть аккаунт? <a class="link-secondary" href="{% url 'user_app:login_view' %}">Авторизация</a>
+                Already have an account? <a class="link-secondary" href="{% url 'user_app:login_view' %}">Sign in</a>
             </label>
             <label>
-                Вернуться на <a class="link-secondary" href="{% url 'blog_app:list_view' %}">главную</a> страницу
+                Got back to <a class="link-secondary" href="{% url 'blog_app:list_view' %}">main</a> page
             </label>
         </div>
         <button class="w-100 btn btn-lg btn-secondary width_limit" type="submit">Sign in</button>

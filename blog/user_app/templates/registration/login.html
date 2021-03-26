@@ -7,7 +7,7 @@
             {% csrf_token %}
             <!--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
 
-            <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
+            <h1 class="h3 mb-3 fw-normal">Sign in</h1>
             {% if error %}
                 <h4 class="h4 mb-3">{{error}}</h4>
             {% endif %}
@@ -23,10 +23,10 @@
 
             <div class="mb-3">
                 <label>
-                    Нет аккаунта? <a class="link-secondary" href="{% url 'user_app:registration_view' %}">Регистрация</a>
+                    Don`t have an account? <a class="link-secondary" href="{% url 'user_app:registration_view' %}">Registration</a>
                 </label>
                 <label>
-                    Вернуться на <a class="link-secondary" href="{% url 'blog_app:list_view' %}">главную</a> страницу
+                    Go back to <a class="link-secondary" href="{% url 'blog_app:list_view' %}">main</a> page
                 </label>
             </div>
             <button class="w-100 btn btn-lg btn-secondary" type="submit">Sign in</button>

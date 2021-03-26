@@ -41,4 +41,6 @@ class CreatePost(View):
             post.save()
             return redirect('blog_app:list_view')
         else:
-            return render(request, self.template_name, {'form': form})
+            categories = Category.objects.all()
+            return render(request, self.template_name, {'form': form,
+                                                        'categories': categories})
