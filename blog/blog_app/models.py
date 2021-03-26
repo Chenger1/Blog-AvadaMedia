@@ -26,6 +26,8 @@ class Post(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     published_date = models.DateTimeField(auto_now=True)
 
+    is_important = models.BooleanField(default=False)
+
     class Meta:
         ordering = ['title', 'created_date', 'published_date', 'is_publish']
         db_table = 'post'
