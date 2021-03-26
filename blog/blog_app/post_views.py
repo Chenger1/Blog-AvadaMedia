@@ -19,7 +19,7 @@ class ListPosts(View):
 
         categories = Category.objects.all()
 
-        important_posts = posts.filter(is_important=True).reverse()[:3]
+        important_posts = posts.filter(is_important=True).order_by('published_date').reverse()[:3]
 
         return render(request, self.template_name, {'posts': posts,
                                                     'important_posts': important_posts,
