@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import reverse
 
 
 class Category(models.Model):
@@ -30,6 +31,9 @@ class Post(models.Model):
     published_date = models.DateTimeField(auto_now=True)
 
     is_important = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse('blog_app:detail_post_view', args=[self.pk])
 
     class Meta:
         ordering = ['-published_date']

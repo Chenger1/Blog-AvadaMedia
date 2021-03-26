@@ -3,8 +3,8 @@
         <h2 class="blog-post-title">{{ post.title }}</h2>
         <p class="blog-post-meta">{{ post.published_date }} <a href="#">{{ post.author }}</a> in {{post.category}}</p>
         <p>{{ post.body }}</p>
+        <p><a class="link-secondary" href="{{ post.get_absolute_url }}">Read</a></p>
     </article>
-<hr>
 {% empty %}
     <p>There is not any posts yet.</p>
 {% endfor %}

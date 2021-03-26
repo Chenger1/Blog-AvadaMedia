@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.views.generic.list import View
+from django.views.generic import View
+from django.views.generic.detail import DetailView
 
 from blog_app.models import Post, Category
 
@@ -44,3 +45,8 @@ class CreatePost(View):
             categories = Category.objects.all()
             return render(request, self.template_name, {'form': form,
                                                         'categories': categories})
+
+
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'post/detail_post.html'

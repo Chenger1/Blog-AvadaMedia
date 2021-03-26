@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ post.title }} {% endblock %}
+
+{% block content %}
+<div>
+    <main class="container">
+        <div class="row">
+            <div class="col-10">
+                <article class="blog-post">
+                    <h2 class="blog-post-title">{{ post.title }}</h2>
+                    <hr>
+                    <p>{{ post.body }}</p>
+                </article>
+            </div>
+            <div class="col-2">
+                <h4>{{ post.author }}</h4>
+                <p>Published: <strong> {{ post.published_date }}</strong></p>
+                Category: <strong>{{ post.category }}</strong>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
