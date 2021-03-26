@@ -10,9 +10,9 @@ class ListPosts(View):
 
     def get(self, request, category_id=None):
         if category_id:
-            posts = self.model.objects.filter(category=category_id)
+            posts = self.model.objects.filter(category=category_id, is_publish=True)
         else:
-            posts = self.model.objects.all()
+            posts = self.model.objects.filter(is_publish=True)
 
         categories = Category.objects.all()
 
