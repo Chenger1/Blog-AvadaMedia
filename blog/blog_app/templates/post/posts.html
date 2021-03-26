@@ -1,0 +1,9 @@
+{% for post in posts %}
+    <article class="blog-post">
+        <h2 class="blog-post-title">{{ post.title }}</h2>
+        <p class="blog-post-meta">{{ post.published_date }} <a href="#">{{ post.author }}</a></p>
+        <p>{{ post.body }}</p>
+    </article>
+{% empty %}
+    <p>There is not any posts yet.</p>
+{% endfor %}
