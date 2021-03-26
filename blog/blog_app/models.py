@@ -9,6 +9,9 @@ class Category(models.Model):
         ordering = ['name']
         db_table = 'category'
 
+    def __str__(self):
+        return self.name
+
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
