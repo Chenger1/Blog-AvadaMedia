@@ -32,5 +32,5 @@ class Post(models.Model):
     is_important = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['title', 'created_date', 'published_date', 'is_publish']
+        ordering = ['-published_date']
         db_table = 'post'
