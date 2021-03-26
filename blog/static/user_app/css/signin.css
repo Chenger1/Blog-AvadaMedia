@@ -26,7 +26,7 @@ body {
   z-index: 2;
 }
 
-.form-signin input[type="email"] {
+.form-signin input[type="text"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -36,4 +36,26 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.form-register{
+  width: 100%;
+  padding: 15px;
+  margin: auto;
+}
+
+.width_limit{
+  max-width: 330px;
+  margin: auto;
+}
+
+.inputs{
+  margin: auto;
+  max-width: 1000px;
+  padding-bottom: 10px;
+}
+.errorlist{
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
 }

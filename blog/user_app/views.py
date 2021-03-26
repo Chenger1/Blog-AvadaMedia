@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 
-from user_app.forms import LoginForm
+from user_app.forms import LoginForm, RegistrationForm
 
 
 class UserLoginView(View):
@@ -37,4 +37,20 @@ class LogoutView(View):
 
 
 class RegistrationView(View):
-    pass
+    template_name = 'registration/registration.html'
+    form = RegistrationForm
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        form = self.form(request.POST)
+        if form.is_valid():
+            form.save()
+            login_user = authenticate(username=form.cleaned_data.get('username'),
+                                      password=form.cleaned_data.get('password1'))
+            if login_user:
+                login(request, login_user)
+            return redirect('blog_app:list_view')
+        else:
+            return render(request, self.template_name, {'form': form})
