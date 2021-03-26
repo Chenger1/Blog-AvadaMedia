@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Create Post
+{% endblock %}
+
+{% block content %}
+<div>
+    <main class="container">
+        <div class="row">
+            <div class="col">
+                <h5>{{user}}. {% now "jS F Y" %}</h5>
+            </div>
+            <div class="col">
+                {% if form.errors %}
+                <ul style="margin-left: 0; padding-left: 0; list-style-type: none; ">
+                    {% for error, text in form.errors.items %}
+                    <li><h4 class="h4 mb-3">{{text}}</h4></li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        <form method="post" class="form-register">
+            {% csrf_token %}
+            <div class="row inputs">
+                <div class="col">
+                    <div class="form-floating">
+                        <input class="form-control" id="floatingTitle" placeholder="name@example.com" name="title"
+                               value="{{ form.data.title }}" required>
+                        <label for="floatingTitle">Title</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <select name="category" class="form-select" aria-label="Категория">
+                        <option selected>Choose category</option>
+                        {% for category in categories %}
+                        <option value="{{category.pk}}">{{category}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row inputs">
+                <div class="col">
+                    <div class="form-floating">
+                            <textarea class="form-control" id="floatingBody" placeholder="name@example.com" name="body"
+                                      required maxlength="5000" style="height: 413px;"></textarea>
+                        <label for="floatingBody">Post text...</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row inputs">
+                <div class="col">
+                    <button type="submit" class="btn btn-secondary" name="is_publish" value="True">Publish</button>
+                    <button type="submit" class="btn btn-light" name="is_publish" value="False">Save</button>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+{% endblock %}
