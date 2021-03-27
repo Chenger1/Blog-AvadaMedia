@@ -14,9 +14,59 @@
                 </article>
             </div>
             <div class="col-2">
+                {% if not post.is_publish %}
+                    <h4 class="fst-italic">Is not published</h4>
+                {% endif %}
                 <h4>{{ post.author }}</h4>
                 <p>Published: <strong> {{ post.published_date }}</strong></p>
                 Category: <strong>{{ post.category }}</strong>
+                {% if post.author == request.user or request.user.is_staff %}
+                <hr>
+                <h5 class="fst-italic">
+                    {% if request.user.is_staff %}
+                    Admin panel:
+                    {% else %}
+                    User panel:
+                    {% endif %}
+                </h5>
+                <div class="row">
+                    <div class="col">
+                        <form action="{% url 'blog_app:hide_post_view' post.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn {% if request.user.is_staff %}btn-secondary
+                                                            {% else %}btn-light{%endif%}"
+                                    value="{{ post.pk }}" style="width: 100%;">
+                                {% if post.is_publish %}
+                                    Hide
+                                {% else %}
+                                    Publish
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn {% if request.user.is_staff %}btn-secondary
+                                                            {% else %}btn-light{%endif%}" value="{{ post.pk }}"
+                                    style="width: 100%;">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <form action="">
+                            {% csrf_token %}
+                            <button type="submit" class="btn {% if request.user.is_staff %}btn-secondary
+                                                            {% else %}btn-light{%endif%}" style="width: 100%;">
+                                Edit
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </main>

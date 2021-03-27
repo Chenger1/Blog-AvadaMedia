@@ -4,6 +4,8 @@ from django.views import View
 
 from user_app.forms import LoginForm, RegistrationForm
 
+from common.mixins import ExtendLoginRequiredMixin
+
 
 class UserLoginView(View):
     template_name = 'registration/login.html'
@@ -30,7 +32,7 @@ class UserLoginView(View):
                                                         'error': 'Введены некорректные данные'})
 
 
-class LogoutView(View):
+class LogoutView(ExtendLoginRequiredMixin, View):
     def get(self, request):
         logout(request)
         return redirect('blog_app:list_view')

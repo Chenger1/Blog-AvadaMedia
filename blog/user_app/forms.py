@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
 
@@ -36,4 +36,6 @@ class RegistrationForm(forms.ModelForm):
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
+        group = Group.objects.get_or_create(name='DefaultUser')[0]
+        user.groups.add(group)
         return user
