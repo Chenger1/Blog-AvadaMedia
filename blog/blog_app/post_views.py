@@ -31,8 +31,7 @@ class CreatePost(View):
     form = CreatePostForm
 
     def get(self, request):
-        categories = Category.objects.all()
-        return render(request, self.template_name, {'categories': categories})
+        return render(request, self.template_name)
 
     def post(self, request):
         form = self.form(data=request.POST)
@@ -42,9 +41,7 @@ class CreatePost(View):
             post.save()
             return redirect('blog_app:list_view')
         else:
-            categories = Category.objects.all()
-            return render(request, self.template_name, {'form': form,
-                                                        'categories': categories})
+            return render(request, self.template_name, {'form': form})
 
 
 class PostDetail(DetailView):
