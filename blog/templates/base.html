@@ -41,7 +41,7 @@
       </div>
       <div class="col-4 d-flex justify-content-end align-items-center">
           {% if user.is_authenticated %}
-            <a class="link-secondary" href="{% url 'user_app:profile_view' user.pk %}" style="margin-right: 20px;">{{ user }}</a>
+            <a class="link-secondary" href="{% url 'user_app:profile_view' request.user.pk %}" style="margin-right: 20px;">{{ request.user }}</a>
             <a class="link-secondary" href="{% url 'blog_app:create_post_view' %}" style="margin-right: 20px;">Create Post</a>
             <a class="btn btn-sm btn-outline-secondary" href="{% url 'user_app:logout_view' %}">Sign out</a>
           {% else %}

@@ -8,6 +8,7 @@
                 <p><small class="text-muted">{{user.first_name}} {{ user.last_name }}</small></p>
                 <p>Date joined: {{user.date_joined}}</p>
             </div>
+            {% if request.user == user %}
             <div class="col-3">
                 <button class="btn btn-secondary"><a href="{% url 'user_app:update_personal_info_view'%}"
                                                      class="link-light" style="text-decoration: none;">
@@ -15,27 +16,30 @@
 
                 <button class="btn btn-secondary" style="margin-top: 10px;">
                     <a href="{% url 'user_app:change_password_view' user.pk %}"
-                                                     class="link-light" style="text-decoration: none;">
-                    Change password</a></button>
+                       class="link-light" style="text-decoration: none;">
+                        Change password</a></button>
             </div>
+            {% endif %}
         </div>
         <hr>
         <div class="row">
             <div class="col">
                 <nav class="nav nav-pills nav-justified">
                     <a class="nav-link " href="{% url 'user_app:profile_view' user.pk%}"
-                    {% if is_publish %}style="border: 1px solid;"{% endif %}>Posts</a>
+                       {% if is_publish %}style="border: 1px solid;" {% endif %}>Posts</a>
+                    {% if request.user == user %}
                     <a class="nav-link" href="{% url 'user_app:profile_saved_view' user.pk%}"
-                    {% if not is_publish %}style="border: 1px solid;"{% endif %}>Saved</a>
+                       {% if not is_publish %}style="border: 1px solid;" {% endif %}>Saved</a>
                     <a class="nav-link" href="#">Link</a>
-                    <a class="nav-link" href="#" >Disabled</a>
+                    <a class="nav-link" href="#">Disabled</a>
+                    {% endif %}
                 </nav>
             </div>
         </div>
         <hr>
         <div class="row">
             <div class="col">
-               {% include 'posts.html' %}
+                {% include 'posts.html' %}
             </div>
         </div>
         {% include 'paginator.html' with page=posts %}
