@@ -19,10 +19,10 @@ class ListPosts(View):
     def get(self, request, category_id=None, year=None):
         if category_id:
             posts = self.model.objects.filter(category=category_id, is_publish=True)
-        elif year:
-            posts = self.model.objects.filter(published_date__year=year)
         else:
             posts = self.model.objects.filter(is_publish=True)
+        if year:
+            posts = posts.filter(published_date__year=year)
 
         paginator = Paginator(posts, 5)
         page = request.GET.get('page')
@@ -41,6 +41,7 @@ class ListPosts(View):
         return render(request, self.template_name, {'posts': posts,
                                                     'important_posts': important_posts,
                                                     'categories': categories,
+                                                    'current_category': category_id,
                                                     'page': page})
 
 
