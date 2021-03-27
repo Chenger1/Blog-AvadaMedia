@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
 
 from blog_app.models import Post, Category
 
@@ -59,3 +61,8 @@ class HidePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
         post.is_publish = not post.is_publish
         post.save()
         return redirect(post.get_absolute_url())
+
+
+class DeletePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog_app:list_view')

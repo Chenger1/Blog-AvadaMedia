@@ -35,7 +35,7 @@
                             {% csrf_token %}
                             <button type="submit" class="btn {% if request.user.is_staff %}btn-secondary
                                                             {% else %}btn-light{%endif%}"
-                                    value="{{ post.pk }}" style="width: 100%;">
+                                    style="width: 100%;">
                                 {% if post.is_publish %}
                                     Hide
                                 {% else %}
@@ -45,10 +45,10 @@
                         </form>
                     </div>
                     <div class="col">
-                        <form action="" method="post">
+                        <form action="{% url 'blog_app:delete_post_view' post.pk %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn {% if request.user.is_staff %}btn-secondary
-                                                            {% else %}btn-light{%endif%}" value="{{ post.pk }}"
+                                                            {% else %}btn-light{%endif%}"
                                     style="width: 100%;">
                                 Delete
                             </button>
