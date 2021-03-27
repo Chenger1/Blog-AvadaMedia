@@ -16,9 +16,11 @@ class ListPosts(View):
     model = Post
     template_name = 'post/list_post.html'
 
-    def get(self, request, category_id=None):
+    def get(self, request, category_id=None, year=None):
         if category_id:
             posts = self.model.objects.filter(category=category_id, is_publish=True)
+        elif year:
+            posts = self.model.objects.filter(published_date__year=year)
         else:
             posts = self.model.objects.filter(is_publish=True)
 
