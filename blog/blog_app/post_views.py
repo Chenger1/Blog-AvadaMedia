@@ -3,6 +3,7 @@ from django.views.generic import View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from blog_app.models import Post, Category
 
@@ -21,13 +22,24 @@ class ListPosts(View):
         else:
             posts = self.model.objects.filter(is_publish=True)
 
-        categories = Category.objects.all()
+        paginator = Paginator(posts, 5)
+        page = request.GET.get('page')
 
         important_posts = posts.filter(is_important=True).order_by('published_date').reverse()[:3]
 
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        categories = Category.objects.all()
+
         return render(request, self.template_name, {'posts': posts,
                                                     'important_posts': important_posts,
-                                                    'categories': categories})
+                                                    'categories': categories,
+                                                    'page': page})
 
 
 class EditPost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):

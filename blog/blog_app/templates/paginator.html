@@ -1,0 +1,24 @@
+<nav class="blog-pagination" aria-label="Pagination">
+    <div class="row">
+        <div class="col-2">
+            {% if page.has_previous %}
+            <a class="btn btn-outline-primary" href="?page={{ page.previous_page_number }}">Newer</a>
+            {% else %}
+            <a class="btn btn-outline-secondary disabled"
+               aria-disabled="true">Newer</a>
+            {% endif %}
+        </div>
+        <div class="col-2">
+            <h4 class="fst-italic">{{ page.number }} of {{ page.paginator.num_pages }}</h4>
+        </div>
+        <div class="col-2">
+            {% if page.has_next %}
+            <a class="btn btn-outline-primary" href="?page={{ page.next_page_number }}" tabindex="-1">Older</a>
+            {% else %}
+            <a class="btn btn-outline-secondary disabled" tabindex="-1"
+               aria-disabled="true">Older</a>
+            {% endif %}
+        </div>
+        <div class="col-9"></div>
+    </div>
+</nav>
