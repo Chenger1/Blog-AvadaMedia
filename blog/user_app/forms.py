@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 
 
@@ -30,6 +31,7 @@ class RegistrationForm(forms.ModelForm):
             raise ValidationError({'username': 'Такой пользователь уже существует'})
         if password1 != password2:
             raise ValidationError({'password1': 'Пароли не совпадают'})
+        validate_password(password1)
 
     def save(self, commit=True):
         user = super().save(commit=False)
