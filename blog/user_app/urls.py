@@ -13,4 +13,5 @@ urlpatterns = [
     path('profile/<int:user_id>/saved/', views.UserProfile.as_view(), {'is_publish': False},
          name='profile_saved_view'),
     path('update_personal_info/', views.UpdatePersonalInfo.as_view(), name='update_personal_info_view'),
+    path('change_password/<int:pk>', views.ChangePassword.as_view(), name='change_password_view'),
 ]

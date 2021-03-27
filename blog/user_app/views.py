@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 from user_app.forms import LoginForm, RegistrationForm, PersonalInfoForm
 
@@ -98,3 +100,8 @@ class UpdatePersonalInfo(ExtendLoginRequiredMixin, View):
             return redirect('user_app:profile_view', user_id=request.user.pk)
         else:
             return render(request, self.template_name, {'form': form})
+
+
+class ChangePassword(PasswordChangeView):
+    template_name = 'registration/change_password_form.html'
+    success_url = reverse_lazy('blog_app:list_view')
