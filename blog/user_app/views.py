@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from user_app.forms import LoginForm, RegistrationForm
+from user_app.forms import LoginForm, RegistrationForm, PersonalInfoForm
 
 from common.mixins import ExtendLoginRequiredMixin
 
@@ -60,7 +60,7 @@ class RegistrationView(View):
             return render(request, self.template_name, {'form': form})
 
 
-class UserProfile(View):
+class UserProfile(ExtendLoginRequiredMixin, View):
     template_name = 'user/profile.html'
 
     def get(self, request, user_id, is_publish=True):
@@ -80,3 +80,21 @@ class UserProfile(View):
                                                     'posts': posts,
                                                     'page': page,
                                                     'is_publish': is_publish})
+
+
+class UpdatePersonalInfo(ExtendLoginRequiredMixin, View):
+    template_name = 'registration/update_info.html'
+    form = PersonalInfoForm
+
+    def get(self, request):
+        user = User.objects.get(pk=request.user.pk)
+        form = PersonalInfoForm(instance=user)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = PersonalInfoForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_app:profile_view', user_id=request.user.pk)
+        else:
+            return render(request, self.template_name, {'form': form})

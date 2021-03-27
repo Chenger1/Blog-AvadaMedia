@@ -9,7 +9,8 @@
                 <p>Date joined: {{user.date_joined}}</p>
             </div>
             <div class="col-2">
-                <button class="btn btn-secondary"><a href="" class="link-light" style="text-decoration: none;">Change
+                <button class="btn btn-secondary"><a href="{% url 'user_app:update_personal_info_view'%}"
+                                                     class="link-light" style="text-decoration: none;">Change
                     info</a></button>
             </div>
         </div>

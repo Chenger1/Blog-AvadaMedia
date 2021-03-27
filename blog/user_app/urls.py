@@ -12,5 +12,5 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.UserProfile.as_view(), name='profile_view'),
     path('profile/<int:user_id>/saved/', views.UserProfile.as_view(), {'is_publish': False},
          name='profile_saved_view'),
-
+    path('update_personal_info/', views.UpdatePersonalInfo.as_view(), name='update_personal_info_view'),
 ]

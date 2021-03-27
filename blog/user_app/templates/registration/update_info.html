@@ -1,0 +1,55 @@
+{% extends 'registration/user_form_base.html' %}
+
+{% block title %}{{request.user}}{% endblock %}
+{% block content %}
+<main class="form-register">
+    <form method="post">
+        {% csrf_token %}
+        <!--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+
+        <h1 class="h3 mb-3 fw-normal">{{ request.user }}</h1>
+        {% if form.errors %}
+            <ul style="margin-left: 0; padding-left: 0; list-style-type: none; ">
+                {% for error, text in form.errors.items %}
+                    <li><h4 class="h4 mb-3">{{text}}</h4></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="row inputs" style="max-width: 500px;">
+            <div class="col">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="floatingEmail" placeholder="name@example.com"
+                           name="email" value="{{ form.instance.email }}" required>
+                    <label for="floatingEmail">Email</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row inputs">
+            <div class="col">
+                <div class="form-floating">
+                    <input class="form-control" id="floatingFirstName" placeholder="name@example.com" name="first_name"
+                           value="{{ form.instance.first_name }}">
+                    <label for="floatingFirstName">First Name (Optional)</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating">
+                    <input class="form-control" id="floatingLastName" placeholder="name@example.com"
+                           name="last_name" value="{{ form.instance.last_name }}">
+                    <label for="floatingLastName">Last Name (Optional)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3 width_limit">
+            <label>
+                Got back to <a class="link-secondary" href="{% url 'user_app:profile_view' user.pk %}">Profile</a>
+            </label>
+        </div>
+        <button class="w-100 btn btn-lg btn-secondary width_limit" type="submit">Save</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
+    </form>
+</main>
+{% endblock %}

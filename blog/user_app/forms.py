@@ -39,3 +39,9 @@ class RegistrationForm(forms.ModelForm):
         group = Group.objects.get_or_create(name='DefaultUser')[0]
         user.groups.add(group)
         return user
+
+
+class PersonalInfoForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email', 'first_name', 'last_name')
