@@ -112,3 +112,11 @@ h1, h2, h3, h4, h5, h6 {
 .blog-footer p:last-child {
   margin-bottom: 0;
 }
+
+.nav-link{
+  color: #6c757d;
+}
+.nav-link:hover{
+  color: #6c757d;
+  border: 1px solid;!important;
+}

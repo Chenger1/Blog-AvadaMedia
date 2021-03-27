@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.views import View
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from user_app.forms import LoginForm, RegistrationForm
 
@@ -56,3 +58,25 @@ class RegistrationView(View):
             return redirect('blog_app:list_view')
         else:
             return render(request, self.template_name, {'form': form})
+
+
+class UserProfile(View):
+    template_name = 'user/profile.html'
+
+    def get(self, request, user_id, is_publish=True):
+        user = User.objects.get(pk=user_id)
+        posts = user.posts.filter(is_publish=is_publish)
+        paginator = Paginator(posts, 3)
+        page = request.GET.get('page')
+
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        return render(request, self.template_name, {'user': user,
+                                                    'posts': posts,
+                                                    'page': page,
+                                                    'is_publish': is_publish})

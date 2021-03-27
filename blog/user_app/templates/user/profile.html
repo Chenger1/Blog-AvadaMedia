@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+    <main class="container" style="max-width: 75%;">
+        <div class="row">
+            <div class="col-10">
+                <h3 class="fst-italic">{{ user.username }}</h3>
+                <p><small class="text-muted">{{user.first_name}} {{ user.last_name }}</small></p>
+                <p>Date joined: {{user.date_joined}}</p>
+            </div>
+            <div class="col-2">
+                <button class="btn btn-secondary"><a href="" class="link-light" style="text-decoration: none;">Change
+                    info</a></button>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <nav class="nav nav-pills nav-justified">
+                    <a class="nav-link " href="{% url 'user_app:profile_view' user.pk%}"
+                    {% if is_publish %}style="border: 1px solid;"{% endif %}>Posts</a>
+                    <a class="nav-link" href="{% url 'user_app:profile_saved_view' user.pk%}"
+                    {% if not is_publish %}style="border: 1px solid;"{% endif %}>Saved</a>
+                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="#" >Disabled</a>
+                </nav>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col">
+               {% include 'posts.html' %}
+            </div>
+        </div>
+        {% include 'paginator.html' with page=posts %}
+    </main>
+</div>
+{% endblock %}

@@ -20,7 +20,7 @@ class Post(models.Model):
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                on_delete=models.CASCADE,
-                               related_name='author')
+                               related_name='posts')
     category = models.ForeignKey(Category,
                                  on_delete=models.CASCADE,
                                  related_name='category')
