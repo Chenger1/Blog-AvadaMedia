@@ -1,13 +1,13 @@
 {% load static %}
 {% for post in posts %}
     <article class="blog-post">
-        <h2 class="blog-post-title">{{ post.title }}
+        <h2 class="blog-post-title wrapping_words">{{ post.title }}
             {% if post.is_important %}
                 <img src="{% static 'blog_app/img/gem.svg' %}" alt="">
             {% endif %}
         </h2>
         <p class="blog-post-meta">{{ post.published_date }} <a href="#">{{ post.author }}</a> in {{post.category}}</p>
-        <p>{{ post.body }}</p>
+        <p class="wrapping_words">{{ post.body }}</p>
         <p><a class="link-secondary" href="{{ post.get_absolute_url }}">Read</a></p>
     </article>
 {% empty %}
