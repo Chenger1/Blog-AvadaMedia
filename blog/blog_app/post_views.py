@@ -30,9 +30,36 @@ class ListPosts(View):
                                                     'categories': categories})
 
 
-class CreatePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
-    template_name = 'post/create_post.html'
+class EditPost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
     form = CreatePostForm
+    template_name = 'post/create_post.html'
+
+    def get(self, request, post_id):
+        post = Post.objects.get(pk=post_id)
+        form = self.form(instance=post)
+        categories = Category.objects.all()
+        return render(request, self.template_name, {'form': form,
+                                                    'categories': categories})
+
+    def post(self, request, post_id):
+        post = Post.objects.get(pk=post_id)
+        form = self.form(data=request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            if request.POST.get('is_important'):
+                post.is_important = True
+            else:
+                post.is_important = False
+            post.save()
+            return redirect(post.get_absolute_url())
+        else:
+            categories = Category.objects.all()
+            return render(request, self.template_name, {'form': form, 'categories': categories})
+
+
+class CreatePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
+    form = CreatePostForm
+    template_name = 'post/create_post.html'
 
     def get(self, request):
         categories = Category.objects.all()
@@ -43,8 +70,12 @@ class CreatePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            if request.POST.get('is_important'):
+                post.is_important = True
+            else:
+                post.is_important = False
             post.save()
-            return redirect('blog_app:list_view')
+            return redirect(post.get_absolute_url())
         else:
             categories = Category.objects.all()
             return render(request, self.template_name, {'form': form, 'categories': categories})
@@ -66,3 +97,11 @@ class HidePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
 class DeletePost(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('blog_app:list_view')
+
+
+class ChangeImportanceView(ExtendLoginRequiredMixin, View):
+    def post(self, request, post_id):
+        post = Post.objects.get(pk=post_id)
+        post.is_important = not post.is_important
+        post.save()
+        return redirect(post.get_absolute_url())

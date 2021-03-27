@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.admin.views.decorators import staff_member_required
 
 from blog_app import post_views
 
@@ -12,4 +13,7 @@ urlpatterns = [
     path('detail_post/<int:pk>/', post_views.PostDetail.as_view(), name='detail_post_view'),
     path('hide_post/<int:post_id>/', post_views.HidePost.as_view(), name='hide_post_view'),
     path('delete_post/<int:pk>/', post_views.DeletePost.as_view(), name='delete_post_view'),
+    path('edit_post/<int:post_id>/', post_views.EditPost.as_view(), name='edit_post_view'),
+    path('change_post_importance/<int:post_id>', staff_member_required(post_views.ChangeImportanceView.as_view()),
+         name='change_importance_view'),
 ]

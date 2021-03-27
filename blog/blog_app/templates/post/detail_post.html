@@ -15,7 +15,10 @@
             </div>
             <div class="col-2">
                 {% if not post.is_publish %}
-                    <h4 class="fst-italic">Is not published</h4>
+                <h4 class="fst-italic">Is not published</h4>
+                {% endif %}
+                {% if post.is_important %}
+                    <h4 class="fst-italic">Important</h4>
                 {% endif %}
                 <h4>{{ post.author }}</h4>
                 <p>Published: <strong> {{ post.published_date }}</strong></p>
@@ -37,9 +40,9 @@
                                                             {% else %}btn-light{%endif%}"
                                     style="width: 100%;">
                                 {% if post.is_publish %}
-                                    Hide
+                                Hide
                                 {% else %}
-                                    Publish
+                                Publish
                                 {% endif %}
                             </button>
                         </form>
@@ -57,15 +60,30 @@
                 </div>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col">
-                        <form action="">
-                            {% csrf_token %}
-                            <button type="submit" class="btn {% if request.user.is_staff %}btn-secondary
+                        {% csrf_token %}
+                        <a href="{% url 'blog_app:edit_post_view' post.pk %}" class="btn {% if request.user.is_staff %}btn-secondary
                                                             {% else %}btn-light{%endif%}" style="width: 100%;">
-                                Edit
-                            </button>
-                        </form>
+                            Edit
+                        </a>
                     </div>
                 </div>
+                {% if request.user.is_staff %}
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col">
+                        <form action="{% url 'blog_app:change_importance_view' post.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary" style="width: 100%;">
+                                {% if post.is_important %}
+                                    Not important
+                                {% else %}
+                                    Important
+                                {% endif %}
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+                {% endif %}
                 {% endif %}
             </div>
         </div>
