@@ -1,7 +1,11 @@
 from django import forms
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+
+
+User = get_user_model()
 
 
 class LoginForm(forms.Form):

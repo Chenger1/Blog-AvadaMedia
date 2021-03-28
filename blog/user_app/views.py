@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.views import PasswordChangeView
@@ -11,6 +11,9 @@ from abc import ABC, abstractmethod
 from user_app.forms import LoginForm, RegistrationForm, PersonalInfoForm
 
 from common.mixins import ExtendLoginRequiredMixin
+
+
+User = get_user_model()
 
 
 class UserLoginView(View):
