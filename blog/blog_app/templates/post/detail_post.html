@@ -88,6 +88,21 @@
                 </div>
                 {% endif %}
                 {% endif %}
+                <div class="row">
+                    <div class="col">
+                        {% if post in request.user.favorites.all %}
+                            <form action="{% url 'user_app:remove_post_from_favorites_view' post.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn favorite_button">Remove from favorites</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'user_app:add_to_favorites_view' post.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn favorite_button">Add to favorites</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </main>

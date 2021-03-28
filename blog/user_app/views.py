@@ -12,6 +12,8 @@ from user_app.forms import LoginForm, RegistrationForm, PersonalInfoForm
 
 from common.mixins import ExtendLoginRequiredMixin
 
+from blog_app.models import Post
+
 
 User = get_user_model()
 
@@ -105,6 +107,13 @@ class UserProfileSaved(UserProfileMixin):
         return super().get(request, user, obj, current_page='saved_post')
 
 
+class UserProfileFavorites(UserProfileMixin):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        obj = user.favorites.all()
+        return super().get(request, user, obj, current_page='favorites')
+
+
 class UserProfileComment(UserProfileMixin):
     def get(self, request, user_id):
         user = User.objects.get(pk=user_id)
@@ -133,3 +142,19 @@ class UpdatePersonalInfo(ExtendLoginRequiredMixin, View):
 class ChangePassword(PasswordChangeView):
     template_name = 'registration/change_password_form.html'
     success_url = reverse_lazy('blog_app:list_view')
+
+
+class AddToFavorites(View):
+    def post(self, request, post_id):
+        post = Post.objects.get(pk=post_id)
+        request.user.favorites.add(post)
+        request.user.save()
+        return redirect(post.get_absolute_url())
+
+
+class RemoveFromFavorites(View):
+    def post(self, request, post_id):
+        post = Post.objects.get(pk=post_id)
+        request.user.favorites.remove(post)
+        request.user.save()
+        return redirect(post.get_absolute_url())

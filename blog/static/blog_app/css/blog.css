@@ -129,3 +129,12 @@ h1, h2, h3, h4, h5, h6 {
   border: none;
   background-color: white;
 }
+
+.favorite_button{
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #e3e3e3;
+}
+.favorite_button:hover{
+  background-color: #f0f0f0;
+}
