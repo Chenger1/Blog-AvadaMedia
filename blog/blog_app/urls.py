@@ -18,4 +18,6 @@ urlpatterns = [
     path('edit_post/<int:post_id>/', post_views.EditPost.as_view(), name='edit_post_view'),
     path('change_post_importance/<int:post_id>', staff_member_required(post_views.ChangeImportanceView.as_view()),
          name='change_importance_view'),
+    path('add_comments/<int:post_id>/', post_views.CreateComment.as_view(), name='create_comment_view'),
+    path('delete_comment/<int:comment_id>/', post_views.DeleteComment.as_view(), name='delete_comment_view'),
 ]

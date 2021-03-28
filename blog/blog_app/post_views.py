@@ -5,9 +5,9 @@ from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from blog_app.models import Post, Category
+from blog_app.models import Post, Category, Comment
 
-from blog_app.forms import CreatePostForm
+from blog_app.forms import CreatePostForm, CreateCommentForm
 
 from common.mixins import ExtendLoginRequiredMixin, UserPermissionsRequiredMixin
 
@@ -119,4 +119,29 @@ class ChangeImportanceView(ExtendLoginRequiredMixin, View):
         post = Post.objects.get(pk=post_id)
         post.is_important = not post.is_important
         post.save()
+        return redirect(post.get_absolute_url())
+
+
+class CreateComment(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
+    model = Comment
+    form = CreateCommentForm
+
+    def post(self, request, post_id):
+        post = Post.objects.get(pk=post_id)
+        form = self.form(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+        return redirect(post.get_absolute_url())
+
+
+class DeleteComment(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
+    model = Comment
+
+    def post(self, request, comment_id):
+        comment = self.model.objects.get(pk=comment_id)
+        post = comment.post
+        comment.delete()
         return redirect(post.get_absolute_url())

@@ -38,3 +38,18 @@ class Post(models.Model):
     class Meta:
         ordering = ['-published_date']
         db_table = 'post'
+
+
+class Comment(models.Model):
+    text = models.TextField(max_length=1000)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL,
+                               on_delete=models.CASCADE,
+                               related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,
+                             related_name='comments')
+
+    published_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'comment'
+        ordering = ['-published_date']

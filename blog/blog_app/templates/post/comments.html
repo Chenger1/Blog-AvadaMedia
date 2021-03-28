@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col">
+        <form action="{% url 'blog_app:create_comment_view' post.pk %}" method="post">
+            {% csrf_token %}
+            <h5 class="fst-italic">Comments: </h5>
+            <div class="input-group">
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                  placeholder="Write you comment..." style="max-width: 50%; resize: none;" name="text"></textarea>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon1">Comment</button>
+            </div>
+        </form>
+    </div>
+    <hr style="margin-top: 10px;">
+
+    <div class="row">
+        <div class="col">
+            {% for comment in comments %}
+                {% include 'list_comments.html' %}
+            {% empty %}
+                <h5 class="fst-italic">There is not comments yet </h5>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>

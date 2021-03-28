@@ -124,3 +124,8 @@ h1, h2, h3, h4, h5, h6 {
 .wrapping_words{
   word-wrap: break-word;
 }
+
+.comment_button{
+  border: none;
+  background-color: white;
+}

@@ -1,0 +1,21 @@
+<div class="comment">
+    <strong class="fst-italic">
+        <a class="link-secondary" href="{% url 'user_app:profile_view' comment.author.pk %}">{{ comment.author }}</a>
+    </strong>
+    {% if request.user == comment.author %}
+    <button class="comment_button" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown" aria-expanded="false">
+        <strong>...</strong>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+        <li>
+            <form action="{% url 'blog_app:delete_comment_view' comment.pk %}" method="post">
+                {% csrf_token %}
+                <button class="dropdown-item">Delete</button>
+            </form>
+        </li>
+    </ul>
+    {% endif %}
+    <p><small class="text-muted">{{ comment.published_date }}</small></p>
+    <p class="wrapping_words">{{ comment.text }}</p>
+</div>

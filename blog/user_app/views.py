@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 
+from abc import ABC, abstractmethod
+
 from user_app.forms import LoginForm, RegistrationForm, PersonalInfoForm
 
 from common.mixins import ExtendLoginRequiredMixin
@@ -62,26 +64,49 @@ class RegistrationView(View):
             return render(request, self.template_name, {'form': form})
 
 
-class UserProfile(ExtendLoginRequiredMixin, View):
+class UserProfileMixin(ABC, ExtendLoginRequiredMixin, View):
     template_name = 'user/profile.html'
+    current_page = {
+        'posts': True,
+        'saved': False
+    }
 
-    def get(self, request, user_id, is_publish=True):
-        user = User.objects.get(pk=user_id)
-        posts = user.posts.filter(is_publish=is_publish)
-        paginator = Paginator(posts, 3)
+    @abstractmethod
+    def get(self, request, user, obj, current_page=None):
+        paginator = Paginator(obj, 3)
         page = request.GET.get('page')
-
         try:
-            posts = paginator.page(page)
+            obj = paginator.page(page)
         except PageNotAnInteger:
-            posts = paginator.page(1)
+            obj = paginator.page(1)
         except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
+            obj = paginator.page(paginator.num_pages)
 
         return render(request, self.template_name, {'user': user,
-                                                    'posts': posts,
+                                                    'objs': obj,
                                                     'page': page,
-                                                    'is_publish': is_publish})
+                                                    'current_page': current_page})
+
+
+class UserProfilePosts(UserProfileMixin):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        obj = user.posts.filter(is_publish=True)
+        return super().get(request, user, obj, current_page='publish_post')
+
+
+class UserProfileSaved(UserProfileMixin):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        obj = user.posts.filter(is_publish=False)
+        return super().get(request, user, obj, current_page='saved_post')
+
+
+class UserProfileComment(UserProfileMixin):
+    def get(self, request, user_id):
+        user = User.objects.get(pk=user_id)
+        obj = user.comments.all()
+        return super().get(request, user, obj, current_page='comments')
 
 
 class UpdatePersonalInfo(ExtendLoginRequiredMixin, View):

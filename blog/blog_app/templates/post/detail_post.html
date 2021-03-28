@@ -12,6 +12,9 @@
                     <hr>
                     <p class="wrapping_words">{{ post.body }}</p>
                 </article>
+                <hr>
+                {% include 'post/comments.html' with comments=post.comments.all %}
+
             </div>
             <div class="col-2">
                 {% if not post.is_publish %}

@@ -26,11 +26,13 @@
             <div class="col">
                 <nav class="nav nav-pills nav-justified">
                     <a class="nav-link " href="{% url 'user_app:profile_view' user.pk%}"
-                       {% if is_publish %}style="border: 1px solid;" {% endif %}>Posts</a>
+                       {% if current_page == 'publish_post' %}style="border: 1px solid;" {% endif %}>Posts</a>
                     {% if request.user == user %}
                     <a class="nav-link" href="{% url 'user_app:profile_saved_view' user.pk%}"
-                       {% if not is_publish %}style="border: 1px solid;" {% endif %}>Saved</a>
-                    <a class="nav-link" href="#">Link</a>
+                       {% if current_page == 'saved_post' %}style="border: 1px solid;" {% endif %}
+                    id="saved">Saved</a>
+                    <a class="nav-link" href="{% url 'user_app:profile_comments_view' user.pk%}"
+                    {% if current_page == 'comments' %}style="border: 1px solid;" {% endif %}>Comments</a>
                     <a class="nav-link" href="#">Disabled</a>
                     {% endif %}
                 </nav>
@@ -38,11 +40,18 @@
         </div>
         <hr>
         <div class="row">
-            <div class="col">
-                {% include 'posts.html' %}
+            <div class="col posts">
+                {% if current_page == 'comments' %}
+                    {% for obj in objs %}
+                        <a class="link-secondary" href="{{ obj.post.get_absolute_url }}">{{ obj.post.title }}</a>
+                        {% include 'list_comments.html' with comment=obj %}
+                    {% endfor %}
+                {% else %}
+                    {% include 'posts.html' with posts=objs %}
+                {% endif %}
             </div>
         </div>
-        {% include 'paginator.html' with page=posts %}
+        {% include 'paginator.html' with page=objs %}
     </main>
 </div>
 {% endblock %}
