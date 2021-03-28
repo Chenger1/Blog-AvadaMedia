@@ -145,3 +145,15 @@ class DeleteComment(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View
         post = comment.post
         comment.delete()
         return redirect(post.get_absolute_url())
+
+
+class EditComment(ExtendLoginRequiredMixin, UserPermissionsRequiredMixin, View):
+    model = Comment
+    form = CreateCommentForm
+
+    def post(self, request, comment_id):
+        comment = self.model.objects.get(pk=comment_id)
+        form = CreateCommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+        return redirect(comment.post.get_absolute_url())

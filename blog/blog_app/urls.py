@@ -20,4 +20,5 @@ urlpatterns = [
          name='change_importance_view'),
     path('add_comments/<int:post_id>/', post_views.CreateComment.as_view(), name='create_comment_view'),
     path('delete_comment/<int:comment_id>/', post_views.DeleteComment.as_view(), name='delete_comment_view'),
+    path('edit_comment/<int:comment_id>/', post_views.EditComment.as_view(), name='edit_comment_view'),
 ]

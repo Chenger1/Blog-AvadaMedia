@@ -45,6 +45,7 @@
                     {% for obj in objs %}
                         <a class="link-secondary" href="{{ obj.post.get_absolute_url }}">{{ obj.post.title }}</a>
                         {% include 'list_comments.html' with comment=obj %}
+                        {% include 'modal.html' with comment=obj %}
                     {% endfor %}
                 {% else %}
                     {% include 'posts.html' with posts=objs %}

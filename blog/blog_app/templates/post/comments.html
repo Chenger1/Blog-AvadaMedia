@@ -15,9 +15,10 @@
     <div class="row">
         <div class="col">
             {% for comment in comments %}
-                {% include 'list_comments.html' %}
+            {% include 'list_comments.html' %}
+            {% include 'modal.html' %}
             {% empty %}
-                <h5 class="fst-italic">There is not comments yet </h5>
+            <h5 class="fst-italic">There is not comments yet </h5>
             {% endfor %}
         </div>
     </div>

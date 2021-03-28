@@ -9,6 +9,11 @@
     </button>
     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li>
+            <button class="dropdown-item" data-bs-toggle="modal" data-bs-target="#Modal-{{ comment.pk }}">
+                Edit
+            </button>
+        </li>
+        <li>
             <form action="{% url 'blog_app:delete_comment_view' comment.pk %}" method="post">
                 {% csrf_token %}
                 <button class="dropdown-item">Delete</button>
