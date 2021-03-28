@@ -19,6 +19,13 @@
                        class="link-light" style="text-decoration: none;">
                         Change password</a></button>
             </div>
+            {% elif request.user.is_staff %}
+                <div class="col-3">
+                    <button class="btn btn-secondary" style="margin-top: 10px;">
+                    <a href="{% url 'admin:auth_user_change' user.pk %}"
+                       class="link-light" style="text-decoration: none;">
+                        Open in admin page</a></button>
+                </div>
             {% endif %}
         </div>
         <hr>
@@ -32,7 +39,7 @@
                        {% if current_page == 'saved_post' %}style="border: 1px solid;" {% endif %}
                     id="saved">Saved</a>
                     <a class="nav-link" href="{% url 'user_app:profile_comments_view' user.pk%}"
-                    {% if current_page == 'comments' %}style="border: 1px solid;" {% endif %}>Comments</a>
+                       {% if current_page == 'comments' %}style="border: 1px solid;" {% endif %}>Comments</a>
                     <a class="nav-link" href="#">Disabled</a>
                     {% endif %}
                 </nav>
@@ -42,13 +49,13 @@
         <div class="row">
             <div class="col posts">
                 {% if current_page == 'comments' %}
-                    {% for obj in objs %}
-                        <a class="link-secondary" href="{{ obj.post.get_absolute_url }}">{{ obj.post.title }}</a>
-                        {% include 'list_comments.html' with comment=obj %}
-                        {% include 'modal.html' with comment=obj %}
-                    {% endfor %}
+                {% for obj in objs %}
+                <a class="link-secondary" href="{{ obj.post.get_absolute_url }}">{{ obj.post.title }}</a>
+                {% include 'list_comments.html' with comment=obj %}
+                {% include 'modal.html' with comment=obj %}
+                {% endfor %}
                 {% else %}
-                    {% include 'posts.html' with posts=objs %}
+                {% include 'posts.html' with posts=objs %}
                 {% endif %}
             </div>
         </div>
