@@ -1,4 +1,5 @@
 {% load static %}
+{% load mark_tag %}
 {% for post in posts %}
     <article class="blog-post">
         <h2 class="blog-post-title wrapping_words">{{ post.title|truncatewords:50}}
@@ -8,7 +9,7 @@
         </h2>
         <p class="blog-post-meta">{{ post.published_date }}
             <a href="{% url 'user_app:profile_view' post.author.pk %}">{{ post.author }}</a> in {{post.category}}</p>
-        <p class="wrapping_words">{{ post.body|truncatewords:50 }}</p>
+        <p class="wrapping_words">{{ post.body|markdown|truncatewords_html:50 }}</p>
         <p><a class="link-secondary" href="{{ post.get_absolute_url }}">Read</a></p>
     </article>
 {% empty %}

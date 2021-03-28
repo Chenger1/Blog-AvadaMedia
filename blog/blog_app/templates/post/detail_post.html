@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load mark_tag %}
 
 {% block title %} {{ post.title }} {% endblock %}
 
@@ -10,7 +11,7 @@
                 <article class="blog-post ">
                     <h2 class="blog-post-title wrapping_words">{{ post.title }}</h2>
                     <hr>
-                    <p class="wrapping_words">{{ post.body }}</p>
+                    <p class="wrapping_words">{{ post.body|markdown }}</p>
                 </article>
                 <hr>
                 {% include 'post/comments.html' with comments=post.comments.all %}
