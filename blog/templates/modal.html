@@ -9,14 +9,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
+                    <small class="text-muted">{{ comment.published_date }}</small>
                       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
                                 style="max-width: 100%; resize: none;" name="text">{{ comment.text }}</textarea>
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-secondary">Save changes</button>
                 </div>
             </div>
         </div>
