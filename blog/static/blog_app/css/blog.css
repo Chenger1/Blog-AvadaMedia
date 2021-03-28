@@ -138,3 +138,18 @@ h1, h2, h3, h4, h5, h6 {
 .favorite_button:hover{
   background-color: #f0f0f0;
 }
+.search_block{
+  width: 75%;
+  border-radius: 30px;
+  background-color: #f2f2f2;
+}
+
+.search_input{
+  width: 100%;
+  border: none;
+  background-color: #f2f2f2;
+  outline: none;!important;
+}
+.search_input:active{
+  background-color: #f2f2f2;
+}
