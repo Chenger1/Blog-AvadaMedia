@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Search {% endblock %}
+
+{% block content %}
+<div>
+    <main class="container">
+        <div class="row">
+            <div class="col">
+                <h2 class="fst-italic">Search:</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form method="get" class="form-contol">
+                    {% csrf_token %}
+                    <div class="row" style="align-items: center;">
+                        <div class="col-4 ">
+                            <div class="form-floating">
+                                <input name="query" value="{{ form.data.query }}" class="form-control"
+                                       required id="searchQuery" placeholder="name@example.com">
+                                <label for="searchQuery">What are you looking for?</label>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                                <button type="submit" class="btn btn-secondary" >Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col" style="max-width: 75%;">
+                {% include 'posts.html' with search=True %}
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}

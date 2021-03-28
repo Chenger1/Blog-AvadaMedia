@@ -2,6 +2,7 @@ from django.urls import path
 from django.contrib.admin.views.decorators import staff_member_required
 
 from blog_app import post_views
+from blog_app import search_view
 
 app_name = 'blog_app'
 
@@ -21,4 +22,6 @@ urlpatterns = [
     path('add_comments/<int:post_id>/', post_views.CreateComment.as_view(), name='create_comment_view'),
     path('delete_comment/<int:comment_id>/', post_views.DeleteComment.as_view(), name='delete_comment_view'),
     path('edit_comment/<int:comment_id>/', post_views.EditComment.as_view(), name='edit_comment_view'),
+
+    path('search/', search_view.SearchView.as_view(), name='search_view'),
 ]

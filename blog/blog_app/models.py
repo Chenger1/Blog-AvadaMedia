@@ -15,7 +15,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=150)
     body = models.TextField(max_length=5000)
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
