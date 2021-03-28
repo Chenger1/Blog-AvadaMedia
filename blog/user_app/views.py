@@ -32,10 +32,10 @@ class UserLoginView(View):
                 return redirect('blog_app:list_view')
             else:
                 return render(request, self.template_name, {'form': form,
-                                                            'error': 'Неправильный логин или пароль'})
+                                                            'error': 'Wrong username or password'})
         else:
             return render(request, self.template_name, {'form': form,
-                                                        'error': 'Введены некорректные данные'})
+                                                        'error': 'Incorrect data'})
 
 
 class LogoutView(ExtendLoginRequiredMixin, View):
@@ -64,7 +64,7 @@ class RegistrationView(View):
             return render(request, self.template_name, {'form': form})
 
 
-class UserProfileMixin(ABC, ExtendLoginRequiredMixin, View):
+class UserProfileMixin(ABC, View):
     template_name = 'user/profile.html'
     current_page = {
         'posts': True,

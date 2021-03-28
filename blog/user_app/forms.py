@@ -28,9 +28,9 @@ class RegistrationForm(forms.ModelForm):
         password2 = self.cleaned_data['password2']
 
         if User.objects.filter(username=username).exists():
-            raise ValidationError({'username': 'Такой пользователь уже существует'})
+            raise ValidationError({'username': 'There user already exists'})
         if password1 != password2:
-            raise ValidationError({'password1': 'Пароли не совпадают'})
+            raise ValidationError({'password1': 'Passwords don`t match'})
         validate_password(password1)
 
     def save(self, commit=True):
