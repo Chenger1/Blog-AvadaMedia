@@ -1,0 +1,61 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Posts{% endblock %}
+
+{% block header %}
+<h1>Posts</h1>
+{% endblock %}
+
+{% block content %}
+<div>
+    <form action="{% url 'django_admin:action_view' 'Post'%}" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                {% include 'actions.html' %}
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 10px;">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body table-responsive p-0">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <input type="checkbox" id="checkbox_toggle">
+                                </th>
+                                {% for header in list_display %}
+                                <th>{{ header }}</th>
+                                {% endfor %}
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for post in posts %}
+                            <tr>
+                                <td><input type="checkbox" value="{{ post.pk }}" class="action-select"
+                                name="_selected_action"></td>
+                                <td><a href="{% url 'django_admin:change_post_admin' post.pk %}">
+                                {{post.title|truncatewords:10}}</a></td>
+                                <td>{{ post.author }}</td>
+                                <td>{{post.created_date}}</td>
+                                <td>{{post.is_important}}</td>
+                                <td>{{post.is_publish}}</td>
+                                <td>{{post.category}}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="{% static 'django-admin/js/checkbox_toggle.js' %}"></script>
+{% endblock %}

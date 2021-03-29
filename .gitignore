@@ -133,3 +133,4 @@ blog_env
 .idea
 migrations
 /blog/static/admin/
+plugins

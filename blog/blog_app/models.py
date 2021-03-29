@@ -35,6 +35,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('blog_app:detail_post_view', args=[self.pk])
 
+    def get_admin_absolute_url(self):
+        return reverse('django_admin:change_post_admin', args=[self.pk])
+
     class Meta:
         ordering = ['-published_date']
         db_table = 'post'
