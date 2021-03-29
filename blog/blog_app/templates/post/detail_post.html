@@ -84,11 +84,11 @@
                                 {% endif %}
                             </button>
                         </form>
-
                     </div>
                 </div>
                 {% endif %}
                 {% endif %}
+                {% if user.is_authenticated %}
                 <div class="row">
                     <div class="col">
                         {% if post in request.user.favorites.all %}
@@ -104,6 +104,7 @@
                         {% endif %}
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </main>
