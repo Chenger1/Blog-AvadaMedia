@@ -18,4 +18,6 @@ urlpatterns = [
          name='change_post_admin'),
     path('blog_app/delete_post/<int:post_id>/', staff_member_required(posts_views.DeletePost.as_view()),
          name='delete_post_admin'),
+    path('blog_app/post/filter/<str:filter_name>/<int:filter_value>/', staff_member_required(posts_views.ListPosts.as_view()),
+         name='list_post_admin_by_filter'),
 ]

@@ -13,10 +13,26 @@ class ListPosts(View):
     template_name = 'blog_app/post/list_posts.html'
     list_display = ['title', 'author', 'created_date', 'is_important', 'is_publish', 'category']
 
-    def get(self, request):
-        posts = self.model.objects.all()
+    def get(self, request, filter_name=None, filter_value=None):
+        posts = self.filter_result(filter_name, filter_value)
+        categories = Category.objects.all()
+
         return render(request, self.template_name, {'posts': posts,
-                                                    'list_display': self.list_display})
+                                                    'list_display': self.list_display,
+                                                    'categories': categories,
+                                                    'current_filter': filter_name,
+                                                    'filter_value': filter_value})
+
+    def filter_result(self, filter_name=None, filter_value=None):
+        if filter_name == 'is_publish':
+            posts = self.model.objects.filter(is_publish=bool(filter_value))
+        elif filter_name == 'is_important':
+            posts = self.model.objects.filter(is_important=bool(filter_value))
+        elif filter_name == 'category':
+            posts = self.model.objects.filter(category__pk=int(filter_value))
+        else:
+            posts = Post.objects.all()
+        return posts
 
 
 class ChangePost(View):

@@ -1,0 +1,10 @@
+.inactive_link{
+    text-decoration: none;
+    color: grey;!important;
+}
+.inactive_link:hover{
+    color: #3c8dbc;!important;
+}
+.active_link{
+    color: #007bff;!important;
+}

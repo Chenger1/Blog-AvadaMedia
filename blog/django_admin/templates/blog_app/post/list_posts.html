@@ -8,53 +8,95 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    <form action="{% url 'django_admin:action_view' 'Post'%}" method="post">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col">
-                {% include 'actions.html' %}
-            </div>
-        </div>
-
-        <div class="row" style="margin-top: 10px;">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body table-responsive p-0">
-                        <table class="table table-hover text-nowrap">
-                            <thead>
-                            <tr>
-                                <th>
-                                    <input type="checkbox" id="checkbox_toggle">
-                                </th>
-                                {% for header in list_display %}
-                                <th>{{ header }}</th>
-                                {% endfor %}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for post in posts %}
-                            <tr>
-                                <td><input type="checkbox" value="{{ post.pk }}" class="action-select"
-                                name="_selected_action"></td>
-                                <td><a href="{% url 'django_admin:change_post_admin' post.pk %}">
-                                {{post.title|truncatewords:10}}</a></td>
-                                <td>{{ post.author }}</td>
-                                <td>{{post.created_date}}</td>
-                                <td>{{post.is_important}}</td>
-                                <td>{{post.is_publish}}</td>
-                                <td>{{post.category}}</td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.card-body -->
+<div class="row">
+    <div class="col-10">
+        <form action="{% url 'django_admin:action_view' 'Post'%}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    {% include 'actions.html' %}
                 </div>
             </div>
-        </div>
 
-    </form>
+            <div class="row" style="margin-top: 10px;">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="checkbox_toggle">
+                                    </th>
+                                    {% for header in list_display %}
+                                    <th>{{ header }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for post in posts %}
+                                <tr>
+                                    <td><input type="checkbox" value="{{ post.pk }}" class="action-select"
+                                               name="_selected_action"></td>
+                                    <td style="word-wrap: break-word;"><a
+                                            href="{% url 'django_admin:change_post_admin' post.pk %}">
+                                        {{post.title}}</a></td>
+                                    <td>{{ post.author }}</td>
+                                    <td>{{post.created_date}}</td>
+                                    <td>{{post.is_important}}</td>
+                                    <td>{{post.is_publish}}</td>
+                                    <td>{{post.category}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-2">
+        <div>
+            <h3>Filters: </h3>
+            <hr>
+                <ul class="list-group">
+                    {% if current_filter %}
+                        <li class="list-group-item"><small><a href="{% url 'django_admin:list_post_admin' %}">Clear all filters</a></small></li>
+                    {% endif %}
+                    <li class="list-group-item">
+                        <h5>Is publish</h5>
+                        <ul>
+                            <li><a href="{% url 'django_admin:list_post_admin_by_filter' 'is_publish' 1 %}"
+                            class="{% if current_filter == 'is_publish' and filter_value == 1%}active_link{% else %}inactive_link{% endif %}">True</a></li>
+                            <li><a href="{% url 'django_admin:list_post_admin_by_filter' 'is_publish' 0 %}"
+                            class="{% if current_filter == 'is_publish' and filter_value == 0%}active_link{% else %}inactive_link{% endif %}">False</a></li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>Is important</h5>
+                        <ul>
+                            <li><a href="{% url 'django_admin:list_post_admin_by_filter' 'is_important' 1 %}"
+                            class="{% if current_filter == 'is_important' and filter_value == 1%}active_link{% else %}inactive_link{% endif %}">True</a></li>
+                            <li><a href="{% url 'django_admin:list_post_admin_by_filter' 'is_important' 0 %}"
+                            class="{% if current_filter == 'is_important' and filter_value == 0%}active_link{% else %}inactive_link{% endif %}">False</a></li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>Category</h5>
+                        <ul>
+                            {% for category in categories %}
+                                <li><a href="{% url 'django_admin:list_post_admin_by_filter' 'category' category.pk %}"
+                                class="{% if current_filter == 'category' and filter_value == category.pk%}active_link{% else %}inactive_link{% endif %}">{{category}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+        </div>
+    </div>
 </div>
 
 <script src="{% static 'django-admin/js/checkbox_toggle.js' %}"></script>
