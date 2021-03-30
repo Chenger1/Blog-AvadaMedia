@@ -59,10 +59,10 @@ class ChangePost(View):
     def post(self, request, post_id):
         post = self.model.objects.get(pk=post_id)
         form = self.form(request.POST, instance=post)
-        multiple = request.POST.get('multiple')
+        multiple = int(request.POST.get('multiple'))
         if form.is_valid():
             post = form.save()
-            if multiple and int(multiple) == True:
+            if multiple:
                 return redirect('django_admin:create_post_admin')
             return redirect(post.get_admin_absolute_url())
         else:

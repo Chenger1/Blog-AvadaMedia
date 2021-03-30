@@ -6,6 +6,9 @@ from django.shortcuts import reverse
 class Category(models.Model):
     name = models.CharField(max_length=20)
 
+    def get_admin_absolute_url(self):
+        return reverse('django_admin:list_category_with_change_form_admin', args=[self.pk])
+
     class Meta:
         ordering = ['name']
         db_table = 'category'

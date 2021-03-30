@@ -60,11 +60,11 @@
         <div class="card-footer">
             <div class="row">
                 <div class="col-11">
-                    <button type="submit" class="btn btn-primary" name="multiple" value="False">Save</button>
-                    <button type="submit" class="btn btn-primary" name="multiple" value="True">Save and add another</button>
+                    <button type="submit" class="btn btn-primary" name="multiple" value="0">Save</button>
+                    <button type="submit" class="btn btn-primary" name="multiple" value="1">Save and add another</button>
                 </div>
                 <div class="col-1">
-                    <a href="{% url 'django_admin:delete_post_admin' post_pk %}" class="btn btn-danger">Delete</a>
+                    <a href="{% url 'django_admin:delete_post_admin' form.instance.pk %}" class="btn btn-danger">Delete</a>
                 </div>
             </div>
         </div>

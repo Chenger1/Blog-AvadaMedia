@@ -1,0 +1,124 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Categories{% endblock %}
+
+{% block header %}
+<div class="row">
+    <div class="col-10">
+        <h1>Categories</h1>
+    </div>
+    <div class="col-2">
+        <a href="{% url 'django_admin:list_category_admin' %}" class="btn btn-secondary">Add new category</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'django_admin:action_view' 'Category'%}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                        {% include 'actions.html' %}
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-10">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%;">
+                                            <input type="checkbox" id="checkbox_toggle">
+                                        </th>
+                                        {% for header in list_display %}
+                                        <th>{{ header }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for category in categories %}
+                                    <tr>
+                                        <td><input type="checkbox" value="{{ category.pk }}" class="action-select"
+                                                   name="_selected_action"></td>
+                                        <td style="word-wrap: break-word;">
+                                            {{ category.name }}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'django_admin:list_category_with_change_form_admin' category.pk %}"
+                                               class="btn btn-default">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <form action="{% if form.instance.pk %}{% url 'django_admin:edit_category_admin' form.instance.pk %}
+                           {% else %}{% url 'django_admin:create_category_admin' %}{% endif %}"
+                  method="post">
+                {% csrf_token %}
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            {% if form.instance.name %}
+                            Change: {{ form.instance.name }}
+                            {% else %}
+                            Category form
+                            {% endif %}
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="{% url 'django_admin:create_category_admin' %}" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleInputName">Name</label>
+                                <input type="text" class="form-control" id="exampleInputName" placeholder="Enter name"
+                                       value="{{ form.instance.name }}" name="name" maxlength="20">
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-10">
+                                    <button type="submit" class="btn btn-primary" name="multiple" value="0">Save
+                                    </button>
+                                    <button type="submit" class="btn btn-primary" name="multiple" value="1">Save and add
+                                        another
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    {% if form.instance.pk %}
+                                    <a href="{% url 'django_admin:delete_category_admin' form.instance.pk %}"
+                                       class="btn btn-danger">Delete</a>
+                                    {% else %}
+                                    <a class="btn btn-outline-secondary">Delete</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% include 'pagination.html' with page=categories %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'django-admin/js/checkbox_toggle.js' %}"></script>
+{% endblock %}
