@@ -42,7 +42,7 @@ class ListPosts(View):
         elif filter_name == 'category':
             posts = self.model.objects.filter(category__pk=int(filter_value))
         else:
-            posts = Post.objects.all()
+            posts = self.model.objects.all()
         return posts
 
 
