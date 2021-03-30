@@ -59,8 +59,11 @@ class ChangePost(View):
     def post(self, request, post_id):
         post = self.model.objects.get(pk=post_id)
         form = self.form(request.POST, instance=post)
+        multiple = request.POST.get('multiple')
         if form.is_valid():
             post = form.save()
+            if multiple and int(multiple) == True:
+                return redirect('django_admin:create_post_admin')
             return redirect(post.get_admin_absolute_url())
         else:
             return self.render_context(form, post)
@@ -85,3 +88,36 @@ class DeletePost(View):
         post = self.model.objects.get(pk=post_id)
         post.delete()
         return redirect('django_admin:list_post_admin')
+
+
+class CreatePost(View):
+    model = Post
+    form = PostForm
+    template_name = 'blog_app/post/create_post.html'
+
+    def get(self, request):
+        form = PostForm()
+        return self.render_context(form)
+
+    def post(self, request):
+        form = PostForm(request.POST)
+        multiple = request.POST.get('multiple')
+        if form.is_valid():
+            post = form.save()
+            if multiple and int(multiple) == True:
+                return redirect('django_admin:create_post_admin')
+            return redirect(post.get_admin_absolute_url())
+        else:
+            return self.render_context(form)
+
+    def get_context(self):
+        users = User.objects.all()
+        categories = Category.objects.all()
+        return {'users': users, 'categories': categories}
+
+    def render_context(self, form):
+        context = self.get_context()
+        return render(self.request, self.template_name, {'form': form,
+                                                         'categories': context.get('categories'),
+                                                         'users': context.get('users')})
+
