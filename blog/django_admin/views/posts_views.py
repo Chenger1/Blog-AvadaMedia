@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.list import View
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from blog_app.models import Post, Category
 
@@ -16,12 +17,22 @@ class ListPosts(View):
     def get(self, request, filter_name=None, filter_value=None):
         posts = self.filter_result(filter_name, filter_value)
         categories = Category.objects.all()
+        paginator = Paginator(posts, 10)
+        page = request.GET.get('page')
+
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
 
         return render(request, self.template_name, {'posts': posts,
                                                     'list_display': self.list_display,
                                                     'categories': categories,
                                                     'current_filter': filter_name,
-                                                    'filter_value': filter_value})
+                                                    'filter_value': filter_value,
+                                                    'page': page})
 
     def filter_result(self, filter_name=None, filter_value=None):
         if filter_name == 'is_publish':

@@ -98,6 +98,11 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        {%  include 'pagination.html' with page=posts %}
+    </div>
+</div>
 
 <script src="{% static 'django-admin/js/checkbox_toggle.js' %}"></script>
 {% endblock %}
