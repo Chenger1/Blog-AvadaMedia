@@ -66,6 +66,15 @@ urlpatterns = [
          name='user_profile_delete_admin'),
 
     # # GROUPS
-    # path('user_app/groups/', staff_member_required(groups_views.ListGroups.as_view()),
-    #      name='list_groups_admin'),
+    path('user_app/groups/', staff_member_required(groups_views.ListGroups.as_view()),
+         name='list_groups_admin'),
+    path('user_app/groups/change_group_form/<int:group_id>',
+         staff_member_required(groups_views.ListGroups.as_view()),
+         name='list_group_with_change_form'),
+    path('user_app/groups/edit_group/<int:group_id>', staff_member_required(groups_views.EditGroup.as_view()),
+         name='edit_group_admin'),
+    path('user_app/groups/create_group/', staff_member_required(groups_views.EditGroup.as_view()),
+         name='create_group_admin'),
+    path('user_app/groups/delete_group/<int:group_id>/', staff_member_required(groups_views.DeleteGroup.as_view()),
+         name='delete_group_admin'),
 ]
