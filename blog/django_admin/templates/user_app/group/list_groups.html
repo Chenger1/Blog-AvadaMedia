@@ -1,0 +1,157 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Groups{% endblock %}
+
+{% block header %}
+<div class="row">
+    <div class="col-10">
+        <h1>Groups</h1>
+    </div>
+    <div class="col-2">
+        <a href="{% url 'django_admin:list_groups_admin' %}" class="btn btn-secondary">Add new group</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <form action="{% url 'django_admin:action_view' 'Group'%}" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                        {% include 'actions.html' %}
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 10px;">
+                    <div class="col-10">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 10%;">
+                                            <input type="checkbox" id="checkbox_toggle">
+                                        </th>
+                                        {% for header in list_display %}
+                                        <th>{{ header }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for group in groups %}
+                                    <tr>
+                                        <td><input type="checkbox" value="{{ group.pk }}" class="action-select"
+                                                   name="_selected_action"></td>
+                                        <td style="word-wrap: break-word;">
+                                            {{ group.name }}
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'django_admin:list_group_with_change_form' group.pk %}"
+                                               class="btn btn-default">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <form action="{% if group.pk %}{% url 'django_admin:edit_group_admin' group.pk %}
+                           {% else %}{% url 'django_admin:create_group_admin' %}{% endif %}"
+                  method="post">
+                {% csrf_token %}
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            {% if group.name %}
+                            Change: {{ group.name }}
+                            {% else %}
+                            Group form
+                            {% endif %}
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form action="{% url 'django_admin:create_category_admin' %}" method="post">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="exampleInputName">Name</label>
+                                <input type="text" class="form-control" id="exampleInputName" placeholder="Enter name"
+                                       value="{{ group.name }}" name="name" maxlength="20">
+                            </div>
+                            <div class="form-group row">
+                                <div class="offset-1 col-sm-10">
+                                    <div class="card card-default" id="s">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Group permissions</label>
+                                                        <select class="duallistbox" multiple="multiple"
+                                                                name="permissions">
+                                                            {% for perm in permissions %}
+                                                            <option value="{{perm.pk}}">{{perm}}</option>
+                                                            {% endfor %}
+                                                            {% for perm in group_permissions %}
+                                                            <option value="{{perm.pk}}" selected>{{perm}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    <!-- /.form-group -->
+                                                </div>
+                                                <!-- /.col -->
+                                            </div>
+                                            <!-- /.row -->
+                                        </div>
+                                        <div class="card-footer">
+                                            Specific permissions for this group.
+                                        </div>
+                                        <!-- /.card-body -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-10">
+                                    <button type="submit" class="btn btn-primary" name="multiple" value="0">Save
+                                    </button>
+                                </div>
+                                <div class="col-2">
+                                    {% if group.pk %}
+                                    <a href="{% url 'django_admin:delete_group_admin' group.pk %}"
+                                       class="btn btn-danger">Delete</a>
+                                    {% else %}
+                                        <a class="btn btn-outline-secondary">Delete</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% include 'pagination.html' with page=groups %}
+        </div>
+    </div>
+</div>
+<script src="{% static 'django-admin/js/checkbox_toggle.js' %}"></script>
+<script src="{% static 'django-admin/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'django-admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<script>
+    $('.duallistbox').bootstrapDualListbox()
+</script>
+{% endblock %}
