@@ -1,0 +1,78 @@
+{% extends 'admin_base.html' %}
+{% load mark_tag %}
+
+{% block header %}
+<h1>Search:</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form action="{% url 'django_admin:search_admin' %}" method="get">
+                        <div class="input-group input-group-lg">
+                            <input type="search" class="form-control form-control-lg" placeholder="Type your keywords here"
+                            name="query" value="{{ form.data.query }}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-lg btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <div class="list-group">
+                        <h3>Posts:</h3>
+                        {% for post in posts %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col px-4">
+                                    <div>
+                                        <div class="float-right">{{post.published_date}}</div>
+                                        <a href="{{post.get_admin_absolute_url}}"><h3>{{post.title}}</h3></a>
+                                        <p class="mb-0">{{post.body|markdown|truncatewords:15}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <div class="list-group">
+                        <h3>Categories:</h3>
+                        {% for category in categories %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col px-4">
+                                    <div>
+                                        <a href="{{category.get_admin_absolute_url}}"><h3>{{category.name}}</h3></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <hr>
+                    <div class="list-group">
+                        <h3>Users:</h3>
+                        {% for user in users %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col px-4">
+                                    <div>
+                                        <a href="{{user.get_admin_absolute_url}}"><h3>{{user}}</h3></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

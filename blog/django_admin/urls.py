@@ -8,12 +8,14 @@ from django_admin.views import category_views
 from django_admin.views import users_views
 from django_admin.views import groups_views
 from django_admin.views import actions
+from django_admin.views import search_views
 
 app_name = 'django_admin'
 
 urlpatterns = [
     path('', staff_member_required(views.DisplayAdminPage.as_view()), name='admin_panel'),
     path('actions/<str:model_name>/', staff_member_required(actions.ActionsView.as_view()), name='action_view'),
+    path('search/', staff_member_required(search_views.SearchView.as_view()), name='search_admin'),
 
     # BLOG_APP
 
