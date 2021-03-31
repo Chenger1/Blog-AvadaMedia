@@ -25,7 +25,7 @@
             {% elif request.user.is_staff %}
                 <div class="col-3">
                     <button class="btn btn-secondary" style="margin-top: 10px;">
-                    <a href="{% url 'admin:user_app_user_change' user.pk %}"
+                    <a href="{% url 'django_admin:user_profile_admin' user.pk %}"
                        class="link-light" style="text-decoration: none;">
                         Open in admin page</a></button>
                 </div>

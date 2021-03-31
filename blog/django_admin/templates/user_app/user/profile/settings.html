@@ -1,0 +1,178 @@
+{% load static %}
+
+
+<div class="card">
+    <div class="card-header p-2">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_admin' user.pk %}"
+            >Posts</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_saved_posts_admin' user.pk%}"
+            >Saved</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_comments_admin' user.pk%}"
+            >Comments</a></li>
+            <li class="nav-item"><a class="nav-link active"
+                                    href="{% url 'django_admin:user_profile_settings_admin' user.pk %}">Settings</a>
+            </li>
+        </ul>
+    </div><!-- /.card-header -->
+    <div class="card-body">
+        <div class="tab-content">
+
+            <div class="tab-pane active" id="settings">
+                <form class="form-horizontal" action="{% url 'django_admin:user_profile_update_info_admin' user.pk %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="inputName" class="col-sm-2 col-form-label">Username</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputName" placeholder="Username"
+                                   name="username" value="{{user.username}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputPassword"
+                                   placeholder="Email" value="{{ user.password }}" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="inputEmail"
+                                   placeholder="Email" name="email" value="{{ user.email }}">
+                        </div>
+                    </div>
+                    <div>
+                        <h3><strong>Personal Info:</strong></h3>
+                        <hr>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputFirstName" class="col-sm-2 col-form-label">First name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputFirstName" placeholder="First name"
+                                   name="first_name" value="{{ user.first_name }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputLastName" class="col-sm-2 col-form-label">Last name</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputLastName" placeholder="Last name"
+                                   name="last_name" value="{{ user.last_name }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputExperience" class="col-sm-2 col-form-label">Information</label>
+                        <div class="col-sm-10">
+                <textarea class="form-control" id="inputExperience"
+                          placeholder="Information" name="extended_info">{{ user.extended_info }}</textarea>
+                        </div>
+                    </div>
+                    <div>
+                        <h3><strong>Permissions: </strong></h3>
+                        <hr>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="is_staff" {% if user.is_staff %}checked{% endif %}
+                                    value="1">
+                                    Staff status
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="is_superuser" {% if user.is_superuser %}checked{% endif %}
+                                    value="1">
+                                    Superuser status
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-1 col-sm-10">
+                            <div class="card card-default" id="s">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>Groups</label>
+                                                <select class="duallistbox" multiple="multiple" name="groups">
+                                                    {% for group in groups %}
+                                                    <option value="{{group.pk}}">{{group}}</option>
+                                                    {% endfor %}
+                                                    {% for group in user_groups %}
+                                                    <option value="{{group.pk}}" selected>{{group}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <!-- /.form-group -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                                <div class="card-footer">
+                                    The groups this user belongs to. A user will get all permissions granted to each of
+                                    their groups.
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <div class="offset-1 col-sm-10">
+                            <div class="card card-default" id="s">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label>User permissions</label>
+                                                <select class="duallistbox" multiple="multiple" name="permissions">
+                                                    {% for perm in permissions %}
+                                                    <option value="{{perm.pk}}">{{perm}}</option>
+                                                    {% endfor %}
+                                                    {% for perm in user_permissions %}
+                                                    <option value="{{perm.pk}}" selected>{{perm}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <!-- /.form-group -->
+                                        </div>
+                                        <!-- /.col -->
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+                                <div class="card-footer">
+                                    Specific permissions for this user.
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-1 col-sm-2">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                        <div class="offset-7 col-sm-1">
+                            <a href="{% url 'django_admin:user_profile_delete_admin' user.pk %}"
+                            class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.tab-content -->
+    </div><!-- /.card-body -->
+</div>
+
+
+<script src="{% static 'django-admin/plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'django-admin/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js' %}"></script>
+<script>
+    $('.duallistbox').bootstrapDualListbox()
+</script>

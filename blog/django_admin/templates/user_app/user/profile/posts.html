@@ -1,0 +1,52 @@
+{% load mark_tag %}
+<div class="card">
+    <div class="card-header p-2">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a class="nav-link {% if mark == 'posts' %}active{% endif %}"
+                                    href="{% url 'django_admin:user_profile_admin' user.pk %}"
+            >Posts</a></li>
+            <li class="nav-item"><a class="nav-link {% if mark == 'saved_posts' %}active{% endif %}"
+                                    href="{% url 'django_admin:user_profile_saved_posts_admin' user.pk%}"
+            >Saved</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_comments_admin' user.pk%}"
+            >Comments</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_settings_admin' user.pk %}">Settings</a>
+            </li>
+        </ul>
+    </div><!-- /.card-header -->
+
+    <div class="card-body">
+        <div class="tab-content">
+            <div class="active tab-pane" id="activity">
+                <!-- Post -->
+                {% for post in posts %}
+                <!-- Post -->
+                <div class="post clearfix">
+                    <div class="user-block">
+        <span>
+            <strong><a href="#">{{user}}</a></strong>
+        </span>
+                        <div><small class="text-muted">{{ post.published_date }}</small></div>
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                        {{ post.body|markdown|truncatewords:30 }}
+                    </p>
+                    <div>
+                        <a href="{{post.get_admin_absolute_url}}">Open post</a>
+                    </div>
+                </div>
+                <!-- /.post -->
+                {% empty %}
+                <p>There is no any posts yet</p>
+                {% endfor %}
+                <div>
+                    {% include 'pagination.html' with page=posts %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

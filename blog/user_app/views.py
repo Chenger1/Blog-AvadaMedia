@@ -94,28 +94,28 @@ class UserProfileMixin(ABC, View):
 
 
 class UserProfilePosts(UserProfileMixin):
-    def get(self, request, user_id):
+    def get(self, request, user_id, obj=None, current_page=None):
         user = User.objects.get(pk=user_id)
         obj = user.posts.filter(is_publish=True)
         return super().get(request, user, obj, current_page='publish_post')
 
 
 class UserProfileSaved(UserProfileMixin):
-    def get(self, request, user_id):
+    def get(self, request, user_id, obj=None, current_page=None):
         user = User.objects.get(pk=user_id)
         obj = user.posts.filter(is_publish=False)
         return super().get(request, user, obj, current_page='saved_post')
 
 
 class UserProfileFavorites(UserProfileMixin):
-    def get(self, request, user_id):
+    def get(self, request, user_id, obj=None, current_page=None):
         user = User.objects.get(pk=user_id)
         obj = user.favorites.all()
         return super().get(request, user, obj, current_page='favorites')
 
 
 class UserProfileComment(UserProfileMixin):
-    def get(self, request, user_id):
+    def get(self, request, user_id, obj=None, current_page=None):
         user = User.objects.get(pk=user_id)
         obj = user.comments.all()
         return super().get(request, user, obj, current_page='comments')

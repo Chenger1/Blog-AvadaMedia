@@ -1,0 +1,113 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Users{% endblock %}
+
+{% block header %}
+<div class="row">
+    <div class="col-10">
+        <h1>Users</h1>
+    </div>
+    <div class="col-2">
+        <a href="{% url 'django_admin:create_user_admin' %}" class="btn btn-secondary">Add new user</a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-10">
+        <form action="{% url 'django_admin:action_view' 'User'%}" method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    {% include 'actions.html' %}
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 10px;">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" id="checkbox_toggle">
+                                    </th>
+                                    {% for header in list_display %}
+                                    <th>{{ header }}</th>
+                                    {% endfor %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+                                <tr>
+                                    <td><input type="checkbox" value="{{ user.pk }}" class="action-select"
+                                               name="_selected_action"></td>
+                                    <td style="word-wrap: break-word;"><a
+                                            href="{% url 'django_admin:user_profile_admin' user.pk %}">{{user}}</a></td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{user.first_name}}</td>
+                                    <td>{{user.last_name}}</td>
+                                    <td>{{user.is_staff}}</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="col-2">
+        <div>
+            <h3>Filters: </h3>
+            <hr>
+                <ul class="list-group">
+                    {% if current_filter %}
+                        <li class="list-group-item"><small><a href="{% url 'django_admin:list_users_admin' %}">Clear all filters</a></small></li>
+                    {% endif %}
+                    <li class="list-group-item">
+                        <h5>By staff status</h5>
+                        <ul>
+                            <li><a href="{% url 'django_admin:list_users_admin_by_filter' 'is_staff' 1%}"
+                            class="{% if current_filter == 'is_staff' and filter_value == 1%}active_link{% else %}inactive_link{% endif %}">True</a></li>
+                            <li><a href="{% url 'django_admin:list_users_admin_by_filter' 'is_staff' 0%}"
+                            class="{% if current_filter == 'is_staff' and filter_value == 0%}active_link{% else %}inactive_link{% endif %}">False</a></li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>By superuser status</h5>
+                        <ul>
+                            <li><a href="{% url 'django_admin:list_users_admin_by_filter' 'is_superuser' 1%}"
+                            class="{% if current_filter == 'is_superuser' and filter_value == 1%}active_link{% else %}inactive_link{% endif %}">True</a></li>
+                            <li><a href="{% url 'django_admin:list_users_admin_by_filter' 'is_superuser' 0%}"
+                            class="{% if current_filter == 'is_superuser' and filter_value == 0%}active_link{% else %}inactive_link{% endif %}">False</a></li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <h5>By Group</h5>
+                        <ul>
+                            {% for group in groups %}
+                                <li><a href="{% url 'django_admin:list_users_admin_by_filter' 'group' group.pk %}"
+                                class="{% if current_filter == 'group' and filter_value == group.pk%}active_link{% else %}inactive_link{% endif %}">{{group}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {%  include 'pagination.html' with page=users %}
+    </div>
+</div>
+
+<script src="{% static 'django-admin/js/checkbox_toggle.js' %}"></script>
+{% endblock %}

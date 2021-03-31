@@ -19,6 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="{% static 'django-admin/dist/css/adminlte.min.css' %}">
     <link rel="stylesheet" href="{% static 'django-admin/css/django-admin.css' %}">
+    <link rel="stylesheet" href="{% static 'django-admin/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css' %}">
 </head>
 <body class="hold-transition sidebar-mini sidebar-collapse">
 <div class="wrapper">
@@ -126,7 +127,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </li>
                         <!--            Blog-->
                         <li class="nav-item menu-open">
-                            <a href="#" class="nav-link">
+                            <a href="" class="nav-link">
                                 <p>
                                     Users
                                     <i class="right fas fa-angle-left"></i>
@@ -140,7 +141,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{% url 'django_admin:list_users_admin' %}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Users</p>
                                     </a>

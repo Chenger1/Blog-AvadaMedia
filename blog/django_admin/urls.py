@@ -4,6 +4,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django_admin.views import views
 from django_admin.views import posts_views
 from django_admin.views import category_views
+from django_admin.views import users_views
 from django_admin.views import actions
 
 app_name = 'django_admin'
@@ -37,4 +38,29 @@ urlpatterns = [
          name='edit_category_admin'),
     path('blog_app/category/delete_category/<int:category_id>/', staff_member_required(category_views.DeleteCategory.as_view()),
          name='delete_category_admin'),
+
+
+    # USER_APP
+
+    # # USERS
+    path('user_app/users/', staff_member_required(users_views.ListUsers.as_view()),
+         name='list_users_admin'),
+    path('user_app/users/filter/<str:filter_name>/<int:filter_value>/', staff_member_required(users_views.ListUsers.as_view()),
+         name='list_users_admin_by_filter'),
+    path('user_app/users/create_user/', staff_member_required(users_views.CreateUser.as_view()),
+         name='create_user_admin'),
+    path('user_app/users/profile/<int:user_id>/', staff_member_required(users_views.UserProfilePosts.as_view()),
+         name='user_profile_admin'),
+    path('user_app/users/profile/<int:user_id>/saved/', staff_member_required(users_views.UserProfileSaved.as_view()),
+         name='user_profile_saved_posts_admin'),
+    path('user_app/users/profile/<int:user_id>/comments/', staff_member_required(users_views.UserProfileComment.as_view()),
+         name='user_profile_comments_admin'),
+    path('user_app/users/profile/<int:user_id>/settings/', staff_member_required(users_views.UserProfileSettings.as_view()),
+         name='user_profile_settings_admin'),
+    path('user_app/users/profile/<int:user_id>/settings/update_info/',
+         staff_member_required(users_views.UserProfileSettings.as_view()),
+         name='user_profile_update_info_admin'),
+    path('user_app/users/profile/<int:user_id>/settings/delete_user/',
+         staff_member_required(users_views.DeleteUser.as_view()),
+         name='user_profile_delete_admin'),
 ]

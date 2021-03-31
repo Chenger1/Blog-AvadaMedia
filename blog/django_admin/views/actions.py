@@ -14,6 +14,7 @@ class ActionsView(View):
     urls = {
         'Post': 'django_admin:list_post_admin',
         'Category': 'django_admin:list_category_admin',
+        'User': 'django_admin:list_users_admin',
     }
     model = None
 

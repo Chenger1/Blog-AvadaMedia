@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-header p-2">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_admin' user.pk %}"
+            >Posts</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_saved_posts_admin' user.pk%}"
+            >Saved</a></li>
+            <li class="nav-item"><a class="nav-link active"
+                                    href="{% url 'django_admin:user_profile_comments_admin' user.pk%}"
+            >Comments</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'django_admin:user_profile_settings_admin' user.pk %}" >Settings</a>
+            </li>
+        </ul>
+    </div><!-- /.card-header -->
+    <div class="card-body">
+        <div class="tab-content">
+
+            <!-- /.tab-pane -->
+            <div class="active tab-pane" id="comments">
+                <!-- The timeline -->
+                {% for comment in comments %}
+                <div class="card">
+                    <div class="card-header">
+                        <a href="{{ obj.post.get_admin_absolute_url }}">{{ comment.post.title }}</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ comment.text }}</p>
+                        <small>{{ comment.published_date }}</small>
+                    </div>
+                </div>
+                {% empty %}
+                <p>There is no any comments yet</p>
+                {% endfor %}
+                <div>
+                    {% include 'pagination.html' with page=comments %}
+                </div>
+            </div>
+            <!-- /.tab-pane -->
+        </div>
+        <!-- /.tab-content -->
+    </div><!-- /.card-body -->
+</div>
