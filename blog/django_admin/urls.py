@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.generic import RedirectView
 
 from django_admin.views import views
 from django_admin.views import posts_views
@@ -77,4 +78,9 @@ urlpatterns = [
          name='create_group_admin'),
     path('user_app/groups/delete_group/<int:group_id>/', staff_member_required(groups_views.DeleteGroup.as_view()),
          name='delete_group_admin'),
+
+    # BLANK
+
+    path('blog_app/', RedirectView.as_view(url='/django-admin/')),
+    path('user_app/', RedirectView.as_view(url='/django-admin/'))
 ]
