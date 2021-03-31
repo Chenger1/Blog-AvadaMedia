@@ -1,35 +1,19 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.views.generic.edit import DeleteView
 from django.contrib.auth.models import Group, Permission
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth import get_user_model
 
 from django_admin.forms.user_app.user import UserRegistrationForm, UpdateUserInfoForm
 
+from common.paginator_mixin import PaginatorMixin
+
 User = get_user_model()
-
-
-class PaginatorMixin:
-    @staticmethod
-    def get_page(objects, max_pages, current_page):
-        paginator = Paginator(objects, max_pages)
-        page = current_page
-
-        try:
-            objs = paginator.page(page)
-        except PageNotAnInteger:
-            objs = paginator.page(1)
-        except EmptyPage:
-            objs = paginator.page(paginator.num_pages)
-
-        return objs
 
 
 class ListUsers(View):
     model = User
     template_name = 'user_app/user/list_users.html'
-    list_dispaly = ('username', 'email', 'first name', 'last name', 'staff status')
+    list_display = ('username', 'email', 'first name', 'last name', 'staff status')
 
     def get(self, request, filter_name=None, filter_value=None):
         users = self.filter_results(filter_name, filter_value)
@@ -38,7 +22,7 @@ class ListUsers(View):
 
         groups = Group.objects.all()
         return render(request, self.template_name, {'users': users,
-                                                    'list_display': self.list_dispaly,
+                                                    'list_display': self.list_display,
                                                     'groups': groups,
                                                     'current_filter': filter_name,
                                                     'filter_value': filter_value,

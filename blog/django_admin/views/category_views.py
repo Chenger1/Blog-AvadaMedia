@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from blog_app.models import Category
 
 from django_admin.forms.blog_app.category import CategoryForm
+
+from common.paginator_mixin import PaginatorMixin
 
 
 class ListCategory(View):
@@ -20,15 +21,8 @@ class ListCategory(View):
             form = self.form(instance=category)
 
         categories = Category.objects.all()
-        paginator = Paginator(categories, 10)
         page = request.GET.get('page')
-
-        try:
-            categories = paginator.page(page)
-        except PageNotAnInteger:
-            categories = paginator.page(1)
-        except EmptyPage:
-            categories = paginator.page(paginator.num_pages)
+        categories = PaginatorMixin.get_page(categories, 10, page)
 
         return render(request, self.template_name, {'categories': categories,
                                                     'list_display': self.list_display,

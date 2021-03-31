@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
 from django.views import View
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 
@@ -13,6 +12,8 @@ from user_app.forms import LoginForm, RegistrationForm, PersonalInfoForm
 from common.mixins import ExtendLoginRequiredMixin
 
 from blog_app.models import Post
+
+from common.paginator_mixin import PaginatorMixin
 
 
 User = get_user_model()
@@ -78,14 +79,9 @@ class UserProfileMixin(ABC, View):
 
     @abstractmethod
     def get(self, request, user, obj, current_page=None):
-        paginator = Paginator(obj, 3)
         page = request.GET.get('page')
-        try:
-            obj = paginator.page(page)
-        except PageNotAnInteger:
-            obj = paginator.page(1)
-        except EmptyPage:
-            obj = paginator.page(paginator.num_pages)
+
+        obj = PaginatorMixin.get_page(obj, 3, page)
 
         return render(request, self.template_name, {'user': user,
                                                     'objs': obj,

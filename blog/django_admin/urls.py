@@ -5,6 +5,7 @@ from django_admin.views import views
 from django_admin.views import posts_views
 from django_admin.views import category_views
 from django_admin.views import users_views
+from django_admin.views import groups_views
 from django_admin.views import actions
 
 app_name = 'django_admin'
@@ -63,4 +64,8 @@ urlpatterns = [
     path('user_app/users/profile/<int:user_id>/settings/delete_user/',
          staff_member_required(users_views.DeleteUser.as_view()),
          name='user_profile_delete_admin'),
+
+    # # GROUPS
+    # path('user_app/groups/', staff_member_required(groups_views.ListGroups.as_view()),
+    #      name='list_groups_admin'),
 ]

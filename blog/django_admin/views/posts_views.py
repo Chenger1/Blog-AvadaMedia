@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.generic.list import View
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from blog_app.models import Post, Category
 
 from user_app.models import User
 
 from django_admin.forms.blog_app.post import PostForm
+
+from common.paginator_mixin import PaginatorMixin
 
 
 class ListPosts(View):
@@ -17,15 +18,8 @@ class ListPosts(View):
     def get(self, request, filter_name=None, filter_value=None):
         posts = self.filter_result(filter_name, filter_value)
         categories = Category.objects.all()
-        paginator = Paginator(posts, 10)
         page = request.GET.get('page')
-
-        try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
+        posts = PaginatorMixin.get_page(posts, 10, page)
 
         return render(request, self.template_name, {'posts': posts,
                                                     'list_display': self.list_display,
