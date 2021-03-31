@@ -42,7 +42,7 @@ class UpdateUserInfoForm(forms.Form):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=150, required=False)
     last_name = forms.CharField(max_length=150, required=False)
-    extended_info = forms.CharField(widget=forms.Textarea)
+    extended_info = forms.CharField(widget=forms.Textarea, required=False)
 
     is_staff = forms.BooleanField(required=False)
     is_superuser = forms.BooleanField(required=False)
